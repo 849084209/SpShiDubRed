@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:microsf="http://micro.camelot.com/schema/microsf"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://micro.camelot.com/schema/microsf
+        http://micro.camelot.com/schema/microsf/microsf.xsd
+        ">
+	<microsf:application name="tms-rms-web" />
+
+	<microsf:registry protocol="zookeeper" address="127.0.0.1:2181"/>
+
+	<!-- <microsf:protocol name="${dubbo.protocol.name}" port="${dubbo.protocol.port}" /> -->
+	<!-- <microsf:provider delay="-1" timeout="6000" retries="0" />
+	<microsf:consumer timeout="${dubbo.timeout.tmsbase}" retries="0" check="false" /> -->
+</beans>

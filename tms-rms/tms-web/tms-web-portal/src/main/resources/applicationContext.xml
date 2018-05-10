@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+				http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+				http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+				http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+				http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+				http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<description>Spring Configuration</description>
+
+	<aop:aspectj-autoproxy />
+	<!-- <context:property-placeholder location="classpath:config.properties" /> -->
+	<import resource="classpath*:spring/spring-config-dubbo.xml" />
+	<import resource="classpath*:spring/spring-redis.xml" />
+	<import resource="classpath*:consumer/spring-*-consumer.xml" />
+	<import resource="classpath*:shiro/applicationContext-shiro.xml" />
+	<import resource="classpath*:message/message-i18n.xml" />
+
+	<bean id="jsonDateConverterMapper" class="com.wilmar.tms.web.util.JsonObjectConverterMapper" />
+	
+	<!-- 本地环境配置文件 -->
+    <beans profile="local">
+        <context:property-placeholder location="classpath*:properties/local/*.properties" />
+    </beans>
+    <!-- 测试环境配置文件 -->
+    <beans profile="test">
+        <context:property-placeholder location="classpath*:properties/test/*.properties" />
+    </beans>
+    <!-- 生产环境配置文件 -->
+    <beans profile="prod">
+        <context:property-placeholder location="classpath*:properties/prod/*.properties" />
+    </beans>
+</beans>

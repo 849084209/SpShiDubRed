@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+				http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+				http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+				http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+				http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+				http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<description>Spring Configuration</description>
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<!-- <context:property-placeholder location="classpath:config.properties" /> -->
+	<context:component-scan base-package="com.wilmar.tms.web"></context:component-scan>
+	<context:annotation-config />
+
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+			<!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg value="UTF-8" />
+			</bean>
+			<!-- 将Jackson2HttpMessageConverter的默认格式化输出设为true -->
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper" ref="jsonDateConverterMapper" />
+				<property name="prettyPrint" value="true" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<!-- swagger配置 -->
+	<bean class="com.wilmar.tms.web.common.SwaggerConfig" />
+	<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" />
+	<mvc:resources mapping="favicon.ico" location="/favicon.ico" />
+	<mvc:resources mapping="/webjars/**"
+		location="classpath:/META-INF/resources/webjars/" />
+
+	<!-- http header的语言解析 -->
+	<bean class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver" />
+
+	<!-- 文件上传表单的视图解析器 -->
+<!-- 	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		one of the properties available; the maximum file size in bytes
+		<property name="maxUploadSize" value="20480000" />
+	</bean> -->
+	
+	<!-- 本地环境配置文件 -->
+    <beans profile="local">
+        <context:property-placeholder location="classpath*:properties/local/*.properties" />
+    </beans>
+    <!-- 测试环境配置文件 -->
+    <beans profile="test">
+        <context:property-placeholder location="classpath*:properties/test/*.properties" />
+    </beans>
+    <!-- 生产环境配置文件 -->
+    <beans profile="prod">
+        <context:property-placeholder location="classpath*:properties/pro/*.properties" />
+    </beans>
+</beans>

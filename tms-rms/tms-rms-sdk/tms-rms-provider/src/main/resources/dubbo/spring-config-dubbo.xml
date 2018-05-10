@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:microsf="http://micro.camelot.com/schema/microsf"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://micro.camelot.com/schema/microsf
+        http://micro.camelot.com/schema/microsf/microsf.xsd">
+
+	<!-- 微服务基础配置 -->
+	<microsf:application name="${dubbo.application.name}" />
+	<!-- <microsf:registry protocol="${dubbo.registry.protocol}" address="${dubbo.registry.address}" 
+		client="${dubbo.client}" /> -->
+	<microsf:registry address="${dubbo.registry.address}" />
+	<!-- 用dubbo协议在20880端口暴露服务 -->
+	<microsf:protocol name="${dubbo.protocol}" port="${dubbo.port}" />
+	<microsf:provider delay="-1" timeout="6000" retries="0" />
+
+
+	<microsf:service interface="com.wilmar.tms.rms.service.UserService"
+		ref="userService" version="2.0.0" timeout="${dubbo.registry.timeout}" />
+</beans>
