@@ -1,7 +1,0 @@
-*.project
-*.prefs
-*.class
-tms-rms-export/target/
-*.classpath
-tms-rms-provider/.settings/
-tms-rms-provider/target/
