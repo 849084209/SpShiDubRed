@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<description>Shiro安全配置</description>
+	<!-- Shiro 的Web过滤器 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
+	<!-- 安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="CustomRealm" />
+		<property name="sessionManager" ref="shiroSessionManager" />
+		 <property name="cacheManager" ref="customCacheManager"/>
+	</bean>
+	<bean id="shiroSessionManager" class="com.wilmar.itm.web.shiro.SessionManager">
+        <!-- 设置超时时间 -->
+        <property name="globalSessionTimeout" value="1800000"/>
+        <property name="deleteInvalidSessions" value="true"/>
+        <property name="sessionValidationSchedulerEnabled" value="true"/>
+        <property name="sessionIdCookieEnabled" value="true"/>
+	</bean>
+	<!-- 自定义 realm -->
+	<bean id="CustomRealm" class="com.wilmar.itm.web.shiro.CustomRealm">
+		<property name="credentialsMatcher" ref="credentialsMatcher" />
+		 <!--启用缓存，默认关闭-->
+        <property name="cachingEnabled" value="true"/>
+        <!--启用身份验证缓存，即缓存AuthenticationInfo，默认false-->
+        <property name="authenticationCachingEnabled" value="true"/>
+        <!--启用授权缓存，即缓存AuthorizationInfo的信息，默认为false-->
+        <property name="authorizationCachingEnabled" value="true"/>
+	</bean>
+	<!-- 凭证匹配器 -->
+	<bean id="credentialsMatcher"
+		class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+		<property name="hashAlgorithmName" value="${hashAlgorithmName}" />
+		<property name="hashIterations" value="${hashIterations}" />
+	</bean>
+	<!-- 缓存管理器-->
+	<bean id="customCacheManager" class="com.wilmar.itm.web.shiro.redis.CustomCacheManager"/>
+<!-- 	<bean id="redisUtil" class="com.wilmar.itm.web.util.RedisUtil"/> -->
+</beans>

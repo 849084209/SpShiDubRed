@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+				http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<description>Spring profile</description>
+    <beans profile="local">
+        <context:property-placeholder location="classpath*:properties/local/*.properties" />
+    </beans>
+    <!-- 测试环境配置文件 -->
+    <beans profile="test">
+        <context:property-placeholder location="classpath*:properties/test/*.properties" />
+    </beans>
+    <!-- 生产环境配置文件 -->
+    <beans profile="prod">
+        <context:property-placeholder location="classpath*:properties/prod/*.properties" />
+    </beans>
+	
+</beans>
