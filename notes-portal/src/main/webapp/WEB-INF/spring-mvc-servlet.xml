@@ -15,7 +15,6 @@
 				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<description>Spring Configuration</description>
-	<aop:aspectj-autoproxy proxy-target-class="true" />
 	<context:component-scan base-package="top.bowenlee.notes"/>
 	<mvc:annotation-driven>
 		<mvc:message-converters register-defaults="true">

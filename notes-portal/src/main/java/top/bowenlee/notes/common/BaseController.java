@@ -13,12 +13,10 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.wilmar.itm.web.constant.ShiroEnum;
-import com.wilmar.itm.web.constant.UniqueKeyEnum;
-import com.wilmar.itm.web.util.BusinessException;
-
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import top.bowenlee.notes.constant.ShiroEnum;
+import top.bowenlee.notes.constant.UniqueKeyEnum;
 
 /**
  * @author 李博文

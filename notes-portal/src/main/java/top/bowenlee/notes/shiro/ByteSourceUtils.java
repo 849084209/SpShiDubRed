@@ -1,4 +1,4 @@
-package com.wilmar.itm.web.shiro;
+package top.bowenlee.notes.shiro;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

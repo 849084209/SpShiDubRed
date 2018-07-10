@@ -1,23 +1,11 @@
-package com.wilmar.itm.web.shiro;
-
-import java.util.List;
+package top.bowenlee.notes.shiro;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
-
-import com.wilmar.itm.web.dao.RmsUserMapper;
-import com.wilmar.itm.web.domain.RmsUser;
-import com.wilmar.itm.web.domain.RmsUserExample;
-import com.wilmar.itm.web.param.dto.UserDTO;
 
 
 /**
@@ -26,8 +14,6 @@ import com.wilmar.itm.web.param.dto.UserDTO;
  */
 public class CustomRealm extends AuthorizingRealm {
 
-	@Autowired
-	private RmsUserMapper rmsUserMapper;
 	/**
 	 * 授权 登录成功
 	 * @param principals
@@ -79,7 +65,7 @@ public class CustomRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
+		/*UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
 		String loginname = usernamePasswordToken.getUsername();
 		RmsUserExample example = new RmsUserExample();
 		example.createCriteria().andAccountEqualTo(loginname);
@@ -90,8 +76,8 @@ public class CustomRealm extends AuthorizingRealm {
 		UserDTO userDTO = new UserDTO();
 		BeanUtils.copyProperties(rmsUsers.get(0), userDTO);
 		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(userDTO, rmsUsers.get(0).getPassword(),
-				new MySimpleByteSource(rmsUsers.get(0).getSalt()), this.getClass().getName());
-		return authenticationInfo;
+				new MySimpleByteSource(rmsUsers.get(0).getSalt()), this.getClass().getName());*/
+		return null;
 	}
 
 }

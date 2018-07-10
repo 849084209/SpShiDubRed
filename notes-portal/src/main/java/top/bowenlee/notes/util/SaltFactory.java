@@ -2,8 +2,8 @@ package top.bowenlee.notes.util;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 
-import com.wilmar.itm.web.constant.InitData;
-import com.wilmar.itm.web.constant.ShiroData;
+import top.bowenlee.notes.constant.InitData;
+import top.bowenlee.notes.constant.ShiroData;
 
 /**根据密码获取加密后的密码和盐
  * @author libowen1

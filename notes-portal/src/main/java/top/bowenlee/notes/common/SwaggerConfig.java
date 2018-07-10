@@ -40,7 +40,7 @@ public class SwaggerConfig {
       */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder().title("ITM")
-        		.description("测试")
+        		.description("笔记")
         		.version("V1.0")
         		.termsOfServiceUrl("http://terms-of-services.url")
                 .license("LICENSE")

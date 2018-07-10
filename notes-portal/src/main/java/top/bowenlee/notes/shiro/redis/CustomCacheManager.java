@@ -1,4 +1,4 @@
-package com.wilmar.itm.web.shiro.redis;
+package top.bowenlee.notes.shiro.redis;
 
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;

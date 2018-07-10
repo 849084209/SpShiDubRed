@@ -1,4 +1,4 @@
-package com.wilmar.itm.web.shiro.redis;
+package top.bowenlee.notes.shiro.redis;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,10 +9,9 @@ import java.util.Set;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 
-import com.wilmar.itm.web.shiro.ByteSourceUtils;
-import com.wilmar.itm.web.util.JedisClientSingle;
-
 import redis.clients.jedis.Jedis;
+import top.bowenlee.notes.shiro.ByteSourceUtils;
+import top.bowenlee.notes.util.JedisClientSingle;
 
 public class RedisCache<K, V> implements Cache<K, V> {
 	public String getKeyPrefix() {

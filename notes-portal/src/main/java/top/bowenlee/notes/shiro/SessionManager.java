@@ -1,19 +1,13 @@
-package com.wilmar.itm.web.shiro;
+package top.bowenlee.notes.shiro;
 
 import java.io.Serializable;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import org.apache.shiro.web.servlet.Cookie;
 import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
-import org.apache.shiro.web.servlet.ShiroHttpSession;
-import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
@@ -24,32 +18,7 @@ public class SessionManager extends DefaultWebSessionManager {
 
 	private static final Logger log = LoggerFactory.getLogger(DefaultWebSessionManager.class);
 
-	private String AUTHORIZATION = "Authorization";
-    private Cookie sessionIdCookie;
-    private boolean sessionIdCookieEnabled;
-
-    public SessionManager() {
-        Cookie cookie = new SimpleCookie(ShiroHttpSession.DEFAULT_SESSION_ID_NAME);
-        cookie.setHttpOnly(true); //more secure, protects against XSS attacks
-        this.sessionIdCookie = cookie;
-        this.sessionIdCookieEnabled = false;
-    }
-
-	public Cookie getSessionIdCookie() {
-		return sessionIdCookie;
-	}
-
-	public void setSessionIdCookie(Cookie sessionIdCookie) {
-		this.sessionIdCookie = sessionIdCookie;
-	}
-
-	public boolean isSessionIdCookieEnabled() {
-		return sessionIdCookieEnabled;
-	}
-
-	public void setSessionIdCookieEnabled(boolean sessionIdCookieEnabled) {
-		this.sessionIdCookieEnabled = sessionIdCookieEnabled;
-	}
+	private String authorization = "Authorization";
 
 	/**
 	 * 重写获取sessionId的方法调用当前Manager的获取方法
@@ -71,41 +40,100 @@ public class SessionManager extends DefaultWebSessionManager {
 	 * @return
 	 */
 	private Serializable getReferencedSessionId(ServletRequest request, ServletResponse response) {
-		String id = WebUtils.toHttp(request).getHeader(AUTHORIZATION);
-		if (StringUtils.isEmpty(id)) {
-			// 如果没有携带id参数则按照父类的方式在cookie进行获取
-			log.info("super：{}" , super.getSessionId(request, response));
-			return super.getSessionId(request, response);
-		} else {
+		String id = this.getSessionIdCookieValue(request, response);
+		log.info("Session-ID:{}",id);
+		if (id != null) {
 			request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE, "cookie");
-			// 如果请求头中有 authToken 则其值为sessionId
+		} else {
+			id = this.getUriPathSegmentParamValue(request, "JSESSIONID");
+			if (id == null) {
+				// 获取请求头中的session
+				id = WebUtils.toHttp(request).getHeader(this.authorization);
+				if (id == null) {
+					String name = this.getSessionIdName();
+					id = request.getParameter(name);
+					if (id == null) {
+						id = request.getParameter(name.toLowerCase());
+					}
+				}
+			}
+			if (id != null) {
+				request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE, "url");
+			}
+		}
+
+		if (id != null) {
 			request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID, id);
 			request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID, Boolean.TRUE);
-			log.info("super：{}" , id);
-			return id;
+		}
+
+		return id;
+	}
+
+	// copy super
+	private String getSessionIdCookieValue(ServletRequest request, ServletResponse response) {
+		String param = null;
+		HttpServletRequest req = (HttpServletRequest)request;
+		  Enumeration<String> ens = req.getHeaders("Authorization");
+        while (ens.hasMoreElements()) {  
+        	String nextElement = ens.nextElement();  
+            if(!StringUtils.isEmpty(nextElement))param = nextElement;
+        }  
+        return param;
+	}
+
+	// copy super
+	private String getUriPathSegmentParamValue(ServletRequest servletRequest, String paramName) {
+		if (!(servletRequest instanceof HttpServletRequest)) {
+			return null;
+		} else {
+			HttpServletRequest request = (HttpServletRequest) servletRequest;
+			Enumeration<String> e = request.getParameterNames();  
+	        while (e.hasMoreElements()) {  
+	            String param = (String) e.nextElement();  
+	            String value2 = request.getParameter(paramName);  
+	            log.info(param + "=" + value2);  
+	        }  
+			String uri = request.getRequestURI();
+			if (uri == null) {
+				return null;
+			} else {
+				int queryStartIndex = uri.indexOf(63);
+				if (queryStartIndex >= 0) {
+					uri = uri.substring(0, queryStartIndex);
+				}
+
+				int index = uri.indexOf(59);
+				if (index < 0) {
+					return null;
+				} else {
+					String TOKEN = paramName + "=";
+					uri = uri.substring(index + 1);
+					index = uri.lastIndexOf(TOKEN);
+					if (index < 0) {
+						return null;
+					} else {
+						uri = uri.substring(index + TOKEN.length());
+						index = uri.indexOf(59);
+						if (index >= 0) {
+							uri = uri.substring(0, index);
+						}
+
+						return uri;
+					}
+				}
+			}
 		}
 	}
 
-	/** 
-	 * 重置sessionid，原session中的数据自动转存到新session中 
-	 * @param request 
-	 */  
-	public static void reGenerateSessionId(HttpServletRequest request){  
-	    HttpSession session = request.getSession();  
-	    //首先将原session中的数据转移至一临时map中  
-	    Map<String,Object> tempMap = new HashMap<String,Object>();  
-	    Enumeration<String> sessionNames = session.getAttributeNames();  
-	    while(sessionNames.hasMoreElements()){  
-	        String sessionName = sessionNames.nextElement();  
-	        tempMap.put(sessionName, session.getAttribute(sessionName));  
-	    }  
-	    //注销原session，为的是重置sessionId  
-	    session.invalidate();  
-	    //将临时map中的数据转移至新session  
-	    session = request.getSession();  
-	    for(Map.Entry<String, Object> entry : tempMap.entrySet()){  
-	        session.setAttribute(entry.getKey(), entry.getValue());  
-	    }  
-	} 
+	// copy super
+	private String getSessionIdName() {
+		String name = this.getSessionIdCookie() != null ? this.getSessionIdCookie().getName() : null;
+		if (name == null) {
+			name = "JSESSIONID";
+		}
+
+		return name;
+	}
 
 }
