@@ -21,7 +21,7 @@
 		<property name="sessionManager" ref="shiroSessionManager" />
 		 <property name="cacheManager" ref="customCacheManager"/>
 	</bean>
-	<bean id="shiroSessionManager" class="com.wilmar.itm.web.shiro.SessionManager">
+	<bean id="shiroSessionManager" class="top.bowenlee.notes.shiro.SessionManager">
         <!-- 设置超时时间 -->
         <property name="globalSessionTimeout" value="1800000"/>
         <property name="deleteInvalidSessions" value="true"/>
@@ -29,7 +29,7 @@
         <property name="sessionIdCookieEnabled" value="true"/>
 	</bean>
 	<!-- 自定义 realm -->
-	<bean id="CustomRealm" class="com.wilmar.itm.web.shiro.CustomRealm">
+	<bean id="CustomRealm" class="top.bowenlee.notes.shiro.CustomRealm">
 		<property name="credentialsMatcher" ref="credentialsMatcher" />
 		 <!--启用缓存，默认关闭-->
         <property name="cachingEnabled" value="true"/>
@@ -45,6 +45,5 @@
 		<property name="hashIterations" value="${hashIterations}" />
 	</bean>
 	<!-- 缓存管理器-->
-	<bean id="customCacheManager" class="com.wilmar.itm.web.shiro.redis.CustomCacheManager"/>
-<!-- 	<bean id="redisUtil" class="com.wilmar.itm.web.util.RedisUtil"/> -->
+	<bean id="customCacheManager" class="top.bowenlee.notes.shiro.redis.CustomCacheManager"/>
 </beans>
