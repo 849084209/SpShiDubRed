@@ -15,12 +15,12 @@
 				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 	<description>Spring Configuration</description>
 	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<bean id="jsonDateConverterMapper" class="top.bowenlee.notes.util.JsonObjectConverterMapper" />
 	<!-- 本地环境配置文件 -->
 	<import resource="classpath*:profile.xml" />
+	<import resource="classpath*:swagger/swagger-config.xml" />
 	<import resource="classpath*:spring/spring-redis.xml" />
-	<import resource="classpath*:spring/spring-dao.xml" />
 	<import resource="classpath*:shiro/applicationContext-shiro.xml" />
 	<import resource="classpath*:message/message-i18n.xml" />
-	<bean id="jsonDateConverterMapper" class="top.bowenlee.notes.util.JsonObjectConverterMapper" />
 
 </beans>

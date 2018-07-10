@@ -30,13 +30,6 @@
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
-	<!-- swagger配置 -->
-	<bean class="com.wilmar.itm.web.common.SwaggerConfig" />
-	<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" />
-	<mvc:resources mapping="favicon.ico" location="/favicon.ico" />
-	<mvc:resources mapping="/webjars/**"
-		location="classpath:/META-INF/resources/webjars/" />
-
 	<!-- http header的语言解析 -->
 	<bean class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver" />
 </beans>

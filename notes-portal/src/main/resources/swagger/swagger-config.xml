@@ -9,7 +9,7 @@
 				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 				http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 	<!-- swagger配置 -->
-	<bean class="com.wilmar.itm.web.common.SwaggerConfig" />
+	<bean class="top.bowenlee.notes.common.SwaggerConfig" />
 	<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" />
 	<mvc:resources mapping="favicon.ico" location="/favicon.ico" />
 	<mvc:resources mapping="/webjars/**"
