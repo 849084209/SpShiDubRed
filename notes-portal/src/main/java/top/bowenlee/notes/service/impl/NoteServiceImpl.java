@@ -8,6 +8,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import top.bowenlee.notes.param.SaveNotes;
@@ -17,6 +18,7 @@ import top.bowenlee.notes.service.NoteService;
 import top.bowenlee.notes.util.CommonUitl;
 
 @SuppressWarnings({"rawtypes","unchecked"})
+@Service
 public class NoteServiceImpl implements NoteService{
 
 	@Autowired

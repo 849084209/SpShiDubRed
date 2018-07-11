@@ -12,7 +12,7 @@ public class PageUtil<T> implements Serializable {
 
     private static final long serialVersionUID = 1368060527204258745L;
 
-    private List<T> data = new ArrayList<>();
+    private List<T> data = new ArrayList<T>();
 
     @ApiModelProperty("总条数")
     private Long total;

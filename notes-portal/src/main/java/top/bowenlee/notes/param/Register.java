@@ -6,10 +6,10 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel("注册")
 public class Register {
 	
-	@ApiModelProperty(value = "昵称",required = true)
+	@ApiModelProperty(value = "昵称",required = true,example="dangmin")
 	private String name;
 	
-	@ApiModelProperty(value = "密码",required = true)
+	@ApiModelProperty(value = "密码",required = true,example="dangmin")
 	private String pasWord;
 	
 	public String getName() {
