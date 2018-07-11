@@ -52,7 +52,7 @@
 
 	<filter>
 		<filter-name>simpleCORSFilter</filter-name>
-		<filter-class>com.wilmar.itm.web.filter.SimpleCORSFilter</filter-class>
+		<filter-class>top.bowenlee.notes.filter.SimpleCORSFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>simpleCORSFilter</filter-name>

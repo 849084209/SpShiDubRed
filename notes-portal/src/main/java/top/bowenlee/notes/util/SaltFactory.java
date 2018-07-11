@@ -2,9 +2,6 @@ package top.bowenlee.notes.util;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 
-import top.bowenlee.notes.constant.InitData;
-import top.bowenlee.notes.constant.ShiroData;
-
 /**根据密码获取加密后的密码和盐
  * @author libowen1
  *
@@ -17,14 +14,13 @@ public class SaltFactory {
 	 * @param crdentials 密码
 	 * @return
 	 */
-	public static String[] getPas(String crdentials,ShiroData shiroData) {
+	public static String[] getPas(String crdentials) {
 		String[] strArr = new String[2];
-		String hashAlgorithmName = shiroData.getHashAlgorithmName();
-		String salt = InitData.getRandomString(shiroData.getSaltSize());
-		int hashIterations = shiroData.getHashIterations();
-		SimpleHash uiCrdentials = new SimpleHash(hashAlgorithmName, crdentials,null,shiroData.getHashIterationsAll()-hashIterations);
-		strArr[0] = new SimpleHash(hashAlgorithmName, uiCrdentials.toString(), salt, hashIterations).toString();
-		strArr[1] = salt.toString();
+		String hashAlgorithmName = "";
+		int hashIterations = 2;
+		SimpleHash uiCrdentials = new SimpleHash(hashAlgorithmName, crdentials,null,1);
+		strArr[0] = new SimpleHash(hashAlgorithmName, uiCrdentials.toString(), "salt", hashIterations).toString();
+		strArr[1] = "salt";
 		return strArr;
 	}
 	/**
@@ -34,11 +30,11 @@ public class SaltFactory {
 	 * @param shiroData
 	 * @return
 	 */
-	public static String[] getPas(String crdentials,String salt,ShiroData shiroData) {
+	public static String[] getPas(String crdentials,String salt) {
 		String[] strArr = new String[2];
-		String hashAlgorithmName = shiroData.getHashAlgorithmName();
-		int hashIterations = shiroData.getHashIterations();
-		SimpleHash uiCrdentials = new SimpleHash(hashAlgorithmName, crdentials,null,shiroData.getHashIterationsAll()-hashIterations);
+		String hashAlgorithmName = "";
+		int hashIterations = 2;
+		SimpleHash uiCrdentials = new SimpleHash(hashAlgorithmName, crdentials,null,1);
 		strArr[0] = new SimpleHash(hashAlgorithmName, uiCrdentials.toString(), salt, hashIterations).toString();
 		strArr[1] = salt.toString();
 		return strArr;
