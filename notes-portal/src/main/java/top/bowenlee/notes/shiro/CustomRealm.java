@@ -3,9 +3,15 @@ package top.bowenlee.notes.shiro;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
+
+import top.bowenlee.notes.service.impl.LoginServiceImpl;
 
 
 /**
@@ -14,6 +20,9 @@ import org.apache.shiro.subject.PrincipalCollection;
  */
 public class CustomRealm extends AuthorizingRealm {
 
+	@Autowired
+	private LoginServiceImpl loginService;
+	
 	/**
 	 * 授权 登录成功
 	 * @param principals
@@ -53,7 +62,6 @@ public class CustomRealm extends AuthorizingRealm {
 		simpleAuthorizationInfo.addRoles(roles);
 		return simpleAuthorizationInfo;
 		 */
-		System.out.println("权限认证");
 		return null;
 	}
 
@@ -65,19 +73,12 @@ public class CustomRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		/*UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
+		UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
 		String loginname = usernamePasswordToken.getUsername();
-		RmsUserExample example = new RmsUserExample();
-		example.createCriteria().andAccountEqualTo(loginname);
-		List<RmsUser> rmsUsers = rmsUserMapper.selectByExample(example);
-		if(CollectionUtils.isEmpty(rmsUsers)){
-			return null;
-		}
-		UserDTO userDTO = new UserDTO();
-		BeanUtils.copyProperties(rmsUsers.get(0), userDTO);
-		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(userDTO, rmsUsers.get(0).getPassword(),
-				new MySimpleByteSource(rmsUsers.get(0).getSalt()), this.getClass().getName());*/
-		return null;
+		String pasWord = (String)loginService.getUser(loginname);
+		if(StringUtils.isEmpty(pasWord))return null;
+		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(loginname, pasWord.substring(0, pasWord.length()-4),new MySimpleByteSource(pasWord.substring(pasWord.length()-4, pasWord.length())),this.getClass().getName());
+		return authenticationInfo;
 	}
 
 }
